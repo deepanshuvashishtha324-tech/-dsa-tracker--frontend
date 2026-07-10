@@ -5,14 +5,7 @@ export default defineConfig({
   plugins: [react()],
   build: {
     rollupOptions: {
-      output: {
-        manualChunks: {
-          'firebase':  ['firebase/app', 'firebase/auth', 'firebase/firestore'],
-          'framer':    ['framer-motion'],
-          'recharts':  ['recharts'],
-          'gemini':    ['@google/generative-ai'],
-        }
-      }
+
     },
     chunkSizeWarningLimit: 600,
   },
