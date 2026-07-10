@@ -9,7 +9,7 @@ const ProfilePage      = React.lazy(() => import('./ProfilePage'))
 const ApproachAnalyzer = React.lazy(() => import('./ApproachAnalyzer'))
 const LeetCodeSync     = React.lazy(() => import('./LeetCodeSync'))
 import { signOut } from 'firebase/auth'
-import { askGemini } from '../GeminiService.js'
+import { askGemini } from '../geminiService.js'
 
 // ─── CSS ─────────────────────────────────────────────────────────────────────
 const css = `
