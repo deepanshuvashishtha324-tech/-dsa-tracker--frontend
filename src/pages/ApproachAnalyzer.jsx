@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { askGemini } from '../geminiService'
+import { askGemini } from '../GeminiService'
 
 const css = `
   .aa-page { display:flex; flex-direction:column; gap:24px; width:100%; }
