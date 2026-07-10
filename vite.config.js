@@ -4,8 +4,13 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
+    rollupOptions:{
+      outout:{
+        manualChunks : undefined,
+      }
+    }
     
-    chunkSizeWarningLimit: 600,
+    
   },
   optimizeDeps: {
     include: ['firebase/app', 'firebase/auth', 'firebase/firestore', 'framer-motion'],
