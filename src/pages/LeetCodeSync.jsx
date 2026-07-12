@@ -179,7 +179,7 @@ export default function LeetCodeSync() {
       setExistingNames(existing)
       setSelected(new Set(probs.filter(p=>!existing.has(p.name)).map(p=>String(p.id))))
       setProblems(probs)
-      setStatus({ type:'info', msg:`âœ“ Found ${probs.length} total solved problems!` })
+      setStatus({ type:'info', msg:`“ Found ${probs.length} total solved problems!` })
     } catch(e) {
       setStatus({ type:'error', msg: e.message||'Failed. Check cookies and try again.' })
     } finally { setFetching(false) }
@@ -235,10 +235,10 @@ export default function LeetCodeSync() {
           {/* Tabs */}
           <div className="lc-tabs">
             <button className={`lc-tab${tab==='quick'?' active':''}`} onClick={()=>{setTab('quick');setProblems([]);setStatus(null)}}>
-              âš¡ Quick Sync (Last 20)
+               Quick Sync (Last 20)
             </button>
             <button className={`lc-tab${tab==='full'?' active':''}`} onClick={()=>{setTab('full');setProblems([]);setStatus(null)}}>
-              ðŸ”‘ Full Sync (All problems)
+              ‘ Full Sync (All problems)
             </button>
           </div>
 
@@ -257,7 +257,7 @@ export default function LeetCodeSync() {
                 </button>
               </div>
               <div style={{fontSize:'11px',color:'var(--muted)',marginBottom:'12px'}}>
-                â„¹ Quick sync fetches your last 20 solved problems. For all problems, use Full Sync tab.
+                ¹ Quick sync fetches your last 20 solved problems. For all problems, use Full Sync tab.
               </div>
             </div>
           )}
@@ -297,7 +297,7 @@ export default function LeetCodeSync() {
                 value={csrf} onChange={e=>setCsrf(e.target.value)}/>
 
               <button className="lc-sync-btn-full" onClick={fetchFull} disabled={fetching||!session.trim()||!csrf.trim()}>
-                {fetching?<><span className="lc-spinner"/>Fetching all problems...</>:'ðŸ”‘ Fetch All Solved Problems'}
+                {fetching?<><span className="lc-spinner"/>Fetching all problems...</>:'‘ Fetch All Solved Problems'}
               </button>
 
               {cookieSaved && (
@@ -316,7 +316,7 @@ export default function LeetCodeSync() {
                 </div>
               )}
               <div style={{fontSize:'11px',color:'var(--muted)',lineHeight:1.6,padding:'10px',background:'rgba(8,8,14,0.4)',borderRadius:'8px',border:'1px solid rgba(30,30,48,0.6)'}}>
-                ðŸ”’ <strong style={{color:'var(--text)'}}>Safe:</strong> Cookies browser mein locally save hoti hain â€” kisi server pe nahi jaati. Session ~30 days valid rehta hai.
+                 <strong style={{color:'var(--text)'}}>Safe:</strong> Cookies are saved locally in the browser – they do not go to any server. The session remains valid for ~30 days.
               </div>
             </div>
           )}
