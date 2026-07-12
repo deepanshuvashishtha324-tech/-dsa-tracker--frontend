@@ -9,13 +9,13 @@ const css = `
   .lc-page { display:flex; flex-direction:column; gap:24px; width:100%; }
   .lc-header h1 { font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; letter-spacing:-0.03em; color:var(--text); }
   .lc-header p  { font-size:12px; color:var(--muted); margin-top:3px; }
-  .lc-glass {
-    background:rgba(19,19,31,0.7); border:1px solid rgba(99,102,241,0.2);
-    border-radius:16px; padding:28px; position:relative; overflow:hidden;
-    backdrop-filter:blur(12px);
-  }
+  .lc-glass { background:rgba(19,19,31,0.7); border:1px solid rgba(99,102,241,0.2); border-radius:16px; padding:28px; position:relative; overflow:hidden; backdrop-filter:blur(12px); }
   .lc-glass::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 0% 0%,rgba(99,102,241,0.1) 0%,transparent 60%); pointer-events:none; }
   .lc-glass-line { position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,rgba(99,102,241,0.8),rgba(129,140,248,0.2),transparent); }
+
+  .lc-tabs { display:flex; gap:4px; margin-bottom:20px; background:var(--surface); padding:4px; border-radius:10px; }
+  .lc-tab { flex:1; padding:8px 12px; border:none; border-radius:7px; font-family:'Inter',sans-serif; font-size:12px; font-weight:500; cursor:pointer; transition:all 0.15s; background:transparent; color:var(--muted); }
+  .lc-tab.active { background:var(--card); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,0.3); }
 
   .lc-input-row { display:flex; gap:10px; margin-bottom:16px; }
   .lc-input-wrap { flex:1; position:relative; }
@@ -23,9 +23,16 @@ const css = `
   .lc-input { width:100%; padding:11px 12px 11px 148px; background:rgba(8,8,14,0.6); border:1px solid rgba(99,102,241,0.2); border-radius:10px; color:var(--text); font-family:'Inter',sans-serif; font-size:13px; outline:none; transition:all 0.2s; }
   .lc-input:focus { border-color:rgba(99,102,241,0.6); box-shadow:0 0 0 3px rgba(99,102,241,0.1); }
   .lc-input::placeholder { color:#475569; }
+  .lc-input-full { width:100%; padding:11px 12px; background:rgba(8,8,14,0.6); border:1px solid rgba(99,102,241,0.2); border-radius:10px; color:var(--text); font-family:'JetBrains Mono',monospace; font-size:11px; outline:none; transition:all 0.2s; margin-bottom:10px; }
+  .lc-input-full:focus { border-color:rgba(99,102,241,0.6); }
+  .lc-input-full::placeholder { color:#475569; font-family:'Inter',sans-serif; }
+
   .lc-sync-btn { padding:11px 20px; background:linear-gradient(135deg,#6366F1,#818CF8); border:none; border-radius:10px; color:white; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; white-space:nowrap; display:flex; align-items:center; gap:8px; box-shadow:0 0 20px rgba(99,102,241,0.3); }
   .lc-sync-btn:hover { transform:translateY(-1px); box-shadow:0 0 28px rgba(99,102,241,0.5); }
   .lc-sync-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+  .lc-sync-btn-full { width:100%; padding:11px; background:linear-gradient(135deg,#6366F1,#818CF8); border:none; border-radius:10px; color:white; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 0 20px rgba(99,102,241,0.3); margin-bottom:16px; }
+  .lc-sync-btn-full:hover { transform:translateY(-1px); }
+  .lc-sync-btn-full:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
 
   .lc-stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
   .lc-stat { background:rgba(8,8,14,0.5); border:1px solid rgba(30,30,48,0.8); border-radius:10px; padding:14px; text-align:center; }
@@ -54,7 +61,7 @@ const css = `
   .lc-already { font-size:10px; color:var(--green); flex-shrink:0; }
 
   .lc-import-btn { width:100%; padding:12px; margin-top:16px; background:linear-gradient(135deg,#22C55E,#16A34A); border:none; border-radius:10px; color:white; font-family:'Inter',sans-serif; font-size:13px; font-weight:600; cursor:pointer; transition:all 0.2s; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 0 20px rgba(34,197,94,0.2); }
-  .lc-import-btn:hover { transform:translateY(-1px); box-shadow:0 0 28px rgba(34,197,94,0.35); }
+  .lc-import-btn:hover { transform:translateY(-1px); }
   .lc-import-btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
 
   .lc-status { padding:12px 16px; border-radius:10px; font-size:13px; font-weight:500; display:flex; align-items:center; gap:8px; margin-bottom:16px; }
@@ -72,23 +79,31 @@ const css = `
   .lc-user-name { font-family:'Space Grotesk',sans-serif; font-size:14px; font-weight:600; color:var(--text); }
   .lc-user-sub { font-size:11px; color:var(--muted); margin-top:2px; }
 
+  .lc-steps { display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .lc-step { display:flex; gap:12px; align-items:flex-start; }
+  .lc-step-num { width:22px; height:22px; border-radius:50%; background:rgba(99,102,241,0.15); border:1px solid rgba(99,102,241,0.3); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--accent3); flex-shrink:0; margin-top:1px; }
+  .lc-step-text { font-size:12px; color:#C4CCDC; line-height:1.6; }
+  .lc-step-text code { background:rgba(99,102,241,0.1); padding:1px 5px; border-radius:3px; font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--accent2); }
+
   .lc-spinner { width:14px; height:14px; border:2px solid rgba(255,255,255,0.25); border-top-color:white; border-radius:50%; animation:spin 0.7s linear infinite; }
   @keyframes spin { to{transform:rotate(360deg)} }
-
-  .lc-empty { text-align:center; padding:40px 20px; color:var(--muted); }
-  .lc-empty-icon { font-size:40px; margin-bottom:12px; opacity:0.4; }
+  .lc-empty { text-align:center; padding:32px 20px; color:var(--muted); }
+  .lc-empty-icon { font-size:36px; margin-bottom:10px; opacity:0.4; }
 
   @media(max-width:600px) {
     .lc-stats-row { grid-template-columns:1fr 1fr; }
     .lc-input-row { flex-direction:column; }
-    .lc-sync-btn { width:100%; justify-content:center; }
   }
 `
 
 const DIFF_MAP = { Easy:'Easy', Medium:'Medium', Hard:'Hard' }
 
 export default function LeetCodeSync() {
-  const [username, setUsername]   = useState('')
+  const [tab, setTab]             = useState('quick')
+  const [username, setUsername]   = useState(() => localStorage.getItem('lc_username') || '')
+  const [session, setSession]     = useState(() => localStorage.getItem('lc_session') || '')
+  const [csrf, setCsrf]           = useState(() => localStorage.getItem('lc_csrf') || '')
+  const [cookieSaved, setCookieSaved] = useState(() => !!localStorage.getItem('lc_session'))
   const [fetching, setFetching]   = useState(false)
   const [lcData, setLcData]       = useState(null)
   const [problems, setProblems]   = useState([])
@@ -99,107 +114,111 @@ export default function LeetCodeSync() {
   const [status, setStatus]       = useState(null)
   const [existingNames, setExistingNames] = useState(new Set())
 
-  const fetchData = async () => {
+  const getExisting = async () => {
+    const uid = auth.currentUser?.uid
+    if (!uid) return new Set()
+    const snap = await getDocs(query(collection(db,'problems'), where('userId','==',uid)))
+    return new Set(snap.docs.map(d => d.data().name))
+  }
+
+  // Quick sync (no cookie - 20 problems)
+  const fetchQuick = async () => {
     if (!username.trim()) return
+    localStorage.setItem('lc_username', username.trim())
     setFetching(true); setStatus(null); setLcData(null); setProblems([])
     try {
-      setStatus({ type:'info', msg:'Connecting to LeetCode via proxy...' })
+      setStatus({ type:'info', msg:'Fetching from LeetCode...' })
       const res = await fetch(`${PROXY_URL}/leetcode/${username.trim()}`)
-      if (!res.ok) {
-        const err = await res.json()
-        throw new Error(err.error || 'User not found')
-      }
+      if (!res.ok) throw new Error('User not found')
       const data = await res.json()
 
-      setLcData({
-        username: data.username,
-        name: data.name,
-        easy: data.stats.easy,
-        medium: data.stats.medium,
-        hard: data.stats.hard,
-        total: data.stats.total,
-      })
-
-      const probs = data.problems.map(p => ({
-        id: p.id || p.slug,
-        name: p.name,
-        slug: p.slug,
-        difficulty: DIFF_MAP[p.difficulty] || 'Medium',
+      setLcData({ username:data.username, name:data.name, ...data.stats })
+      const probs = (data.problems||[]).map(p => ({
+        id: p.id||p.slug, name:p.name, slug:p.slug,
+        difficulty: DIFF_MAP[p.difficulty]||'Medium',
       }))
 
-      // Check existing in Firebase
-      const uid = auth.currentUser?.uid
-      if (uid) {
-        const snap = await getDocs(query(collection(db,'problems'), where('userId','==',uid)))
-        const existing = new Set(snap.docs.map(d => d.data().name))
-        setExistingNames(existing)
-        setSelected(new Set(probs.filter(p => !existing.has(p.name)).map(p => String(p.id))))
-      } else {
-        setSelected(new Set(probs.map(p => String(p.id))))
-      }
-
+      const existing = await getExisting()
+      setExistingNames(existing)
+      setSelected(new Set(probs.filter(p=>!existing.has(p.name)).map(p=>String(p.id))))
       setProblems(probs)
-      setStatus({ type:'info', msg:`✓ Found ${probs.length} solved problems for @${data.username}` })
+      setStatus({ type:'info', msg:`âœ“ Found ${probs.length} recent problems for @${data.username} (last 20 only)` })
     } catch(e) {
-      setStatus({ type:'error', msg: e.message || 'Failed to fetch. Check username.' })
+      setStatus({ type:'error', msg: e.message||'Failed to fetch' })
+    } finally { setFetching(false) }
+  }
+
+  // Full sync with cookie
+  const fetchFull = async () => {
+    if (!session.trim() || !csrf.trim()) {
+      setStatus({ type:'error', msg:'Please enter both LEETCODE_SESSION and csrftoken' })
+      return
+    }
+    // Save to localStorage
+    localStorage.setItem('lc_session', session.trim())
+    localStorage.setItem('lc_csrf', csrf.trim())
+    localStorage.setItem('lc_username', username.trim())
+    setCookieSaved(true)
+    setFetching(true); setStatus(null); setProblems([])
+    try {
+      setStatus({ type:'info', msg:'Fetching ALL solved problems via cookie...' })
+      const res = await fetch(`${PROXY_URL}/leetcode/all-problems`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session: session.trim(), csrf: csrf.trim() })
+      })
+      if (!res.ok) throw new Error('Failed to fetch')
+      const data = await res.json()
+
+      const probs = (data.problems||[]).map(p => ({
+        id: p.id||p.slug, name:p.name, slug:p.slug,
+        difficulty: DIFF_MAP[p.difficulty]||'Medium',
+      }))
+
+      const existing = await getExisting()
+      setExistingNames(existing)
+      setSelected(new Set(probs.filter(p=>!existing.has(p.name)).map(p=>String(p.id))))
+      setProblems(probs)
+      setStatus({ type:'info', msg:`âœ“ Found ${probs.length} total solved problems!` })
+    } catch(e) {
+      setStatus({ type:'error', msg: e.message||'Failed. Check cookies and try again.' })
     } finally { setFetching(false) }
   }
 
   const toggleSelect = (id) => {
-    setSelected(s => {
-      const next = new Set(s)
-      next.has(String(id)) ? next.delete(String(id)) : next.add(String(id))
-      return next
-    })
+    setSelected(s => { const n=new Set(s); n.has(String(id))?n.delete(String(id)):n.add(String(id)); return n })
   }
-
   const toggleAll = () => {
-    const filtered = filteredProblems.map(p => String(p.id))
-    const allSel = filtered.every(id => selected.has(id))
-    setSelected(s => {
-      const next = new Set(s)
-      if (allSel) filtered.forEach(id => next.delete(id))
-      else filtered.forEach(id => next.add(id))
-      return next
-    })
+    const ids = filteredProblems.map(p=>String(p.id))
+    const allSel = ids.every(id=>selected.has(id))
+    setSelected(s => { const n=new Set(s); if(allSel)ids.forEach(id=>n.delete(id)); else ids.forEach(id=>n.add(id)); return n })
   }
 
   const importSelected = async () => {
-    const toImport = problems.filter(p => selected.has(String(p.id)) && !existingNames.has(p.name))
-    if (!toImport.length) { setStatus({type:'error', msg:'No new problems to import!'}); return }
-
-    setImporting(true); setStatus(null)
-    setProgress({ current:0, total:toImport.length })
-
-    
-
+    const toImport = problems.filter(p=>selected.has(String(p.id))&&!existingNames.has(p.name))
+    if (!toImport.length) { setStatus({type:'error',msg:'No new problems to import!'}); return }
+    setImporting(true); setStatus(null); setProgress({current:0,total:toImport.length})
     try {
       const uid = auth.currentUser?.uid
-      for (let i = 0; i < toImport.length; i++) {
+      for (let i=0;i<toImport.length;i++) {
         const p = toImport[i]
         await addDoc(collection(db,'problems'), {
-          name: p.name,
-          difficulty: p.difficulty,
-          topic: 'LeetCode',
-          status: 'Solved',
-          timeTaken: 0,
-          source: 'leetcode',
-          leetcodeSlug: p.slug,
-          userId: uid || null,
-          createdAt: serverTimestamp(),
+          name:p.name, difficulty:p.difficulty, topic:'LeetCode',
+          status:'Solved', timeTaken:0, source:'leetcode',
+          userId:uid||null, createdAt:serverTimestamp(),
         })
-        setProgress({ current:i+1, total:toImport.length })
+        setProgress({current:i+1,total:toImport.length})
       }
-      setStatus({ type:'success', msg:`✓ Imported ${toImport.length} problems successfully!` })
-      setExistingNames(e => new Set([...e, ...toImport.map(p => p.name)]))
+      setStatus({type:'success',msg:`âœ“ Imported ${toImport.length} problems!`})
+      setExistingNames(e=>new Set([...e,...toImport.map(p=>p.name)]))
       setSelected(new Set())
     } catch(e) {
-      setStatus({ type:'error', msg:'Import failed. Try again.' })
+      setStatus({type:'error',msg:'Import failed.'})
     } finally { setImporting(false) }
   }
 
-  const filteredProblems = filter === 'All' ? problems : problems.filter(p => p.difficulty === filter)
-  const newCount = problems.filter(p => selected.has(String(p.id)) && !existingNames.has(p.name)).length
+  const filteredProblems = filter==='All'?problems:problems.filter(p=>p.difficulty===filter)
+  const newCount = problems.filter(p=>selected.has(String(p.id))&&!existingNames.has(p.name)).length
 
   return (
     <>
@@ -207,38 +226,114 @@ export default function LeetCodeSync() {
       <div className="lc-page">
         <div className="lc-header">
           <h1>LeetCode Sync</h1>
-          <p>Auto-import all your solved problems from LeetCode</p>
+          <p>Import your solved problems from LeetCode</p>
         </div>
 
         <motion.div className="lc-glass" initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{duration:0.3}}>
           <div className="lc-glass-line"/>
 
-          {/* Username Input */}
-          <div className="lc-input-row">
-            <div className="lc-input-wrap">
-              <span className="lc-input-prefix">leetcode.com/u/</span>
-              <input className="lc-input" placeholder="your_username"
-                value={username} onChange={e=>setUsername(e.target.value)}
-                onKeyDown={e=>e.key==='Enter'&&fetchData()}/>
-            </div>
-            <button className="lc-sync-btn" onClick={fetchData} disabled={fetching||!username.trim()}>
-              {fetching ? <><span className="lc-spinner"/>Fetching...</> : '⟳ Sync Problems'}
+          {/* Tabs */}
+          <div className="lc-tabs">
+            <button className={`lc-tab${tab==='quick'?' active':''}`} onClick={()=>{setTab('quick');setProblems([]);setStatus(null)}}>
+              âš¡ Quick Sync (Last 20)
+            </button>
+            <button className={`lc-tab${tab==='full'?' active':''}`} onClick={()=>{setTab('full');setProblems([]);setStatus(null)}}>
+              ðŸ”‘ Full Sync (All problems)
             </button>
           </div>
 
+          {/* Quick Sync Tab */}
+          {tab==='quick' && (
+            <div>
+              <div className="lc-input-row">
+                <div className="lc-input-wrap">
+                  <span className="lc-input-prefix">leetcode.com/u/</span>
+                  <input className="lc-input" placeholder="your_username"
+                    value={username} onChange={e=>setUsername(e.target.value)}
+                    onKeyDown={e=>e.key==='Enter'&&fetchQuick()}/>
+                </div>
+                <button className="lc-sync-btn" onClick={fetchQuick} disabled={fetching||!username.trim()}>
+                  {fetching?<><span className="lc-spinner"/>Fetching...</>:'âŸ³ Sync'}
+                </button>
+              </div>
+              <div style={{fontSize:'11px',color:'var(--muted)',marginBottom:'12px'}}>
+                â„¹ Quick sync fetches your last 20 solved problems. For all problems, use Full Sync tab.
+              </div>
+            </div>
+          )}
+
+          {/* Full Sync Tab */}
+          {tab==='full' && (
+            <div>
+              <div className="lc-steps">
+                <div className="lc-step">
+                  <div className="lc-step-num">1</div>
+                  <div className="lc-step-text">LeetCode.com pe login karo â†’ F12 â†’ Application tab â†’ Cookies â†’ leetcode.com</div>
+                </div>
+                <div className="lc-step">
+                  <div className="lc-step-num">2</div>
+                  <div className="lc-step-text"><code>LEETCODE_SESSION</code> cookie ki value copy karo (bahut lamba string hoga)</div>
+                </div>
+                <div className="lc-step">
+                  <div className="lc-step-num">3</div>
+                  <div className="lc-step-text"><code>csrftoken</code> cookie ki value copy karo</div>
+                </div>
+                <div className="lc-step">
+                  <div className="lc-step-num">4</div>
+                  <div className="lc-step-text">Dono neeche paste karo â†’ Fetch All karo</div>
+                </div>
+              </div>
+
+              <div style={{fontSize:'11px',fontWeight:600,color:'var(--muted)',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:'6px'}}>
+                LEETCODE_SESSION
+              </div>
+              <input className="lc-input-full" placeholder="eyJ0eXAiOiJKV1QiLCJhbGci..." 
+                value={session} onChange={e=>setSession(e.target.value)} type="password"/>
+
+              <div style={{fontSize:'11px',fontWeight:600,color:'var(--muted)',letterSpacing:'0.06em',textTransform:'uppercase',marginBottom:'6px'}}>
+                csrftoken
+              </div>
+              <input className="lc-input-full" placeholder="abc123xyz..." 
+                value={csrf} onChange={e=>setCsrf(e.target.value)}/>
+
+              <button className="lc-sync-btn-full" onClick={fetchFull} disabled={fetching||!session.trim()||!csrf.trim()}>
+                {fetching?<><span className="lc-spinner"/>Fetching all problems...</>:'ðŸ”‘ Fetch All Solved Problems'}
+              </button>
+
+              {cookieSaved && (
+                <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 14px',background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.2)',borderRadius:'8px',marginBottom:'10px'}}>
+                  <div style={{fontSize:'12px',color:'#4ade80',display:'flex',alignItems:'center',gap:'6px'}}>
+                    <span>âœ“</span> Cookies saved â€” auto-filled next time!
+                  </div>
+                  <button onClick={()=>{
+                    localStorage.removeItem('lc_session')
+                    localStorage.removeItem('lc_csrf')
+                    setSession(''); setCsrf(''); setCookieSaved(false)
+                    setStatus({type:'info',msg:'Cookies cleared!'})
+                  }} style={{padding:'4px 10px',background:'transparent',border:'1px solid rgba(244,63,94,0.3)',borderRadius:'6px',color:'#fb7185',fontSize:'11px',cursor:'pointer'}}>
+                    Clear
+                  </button>
+                </div>
+              )}
+              <div style={{fontSize:'11px',color:'var(--muted)',lineHeight:1.6,padding:'10px',background:'rgba(8,8,14,0.4)',borderRadius:'8px',border:'1px solid rgba(30,30,48,0.6)'}}>
+                ðŸ”’ <strong style={{color:'var(--text)'}}>Safe:</strong> Cookies browser mein locally save hoti hain â€” kisi server pe nahi jaati. Session ~30 days valid rehta hai.
+              </div>
+            </div>
+          )}
+
           {/* Status */}
           <AnimatePresence>
-            {status && (
+            {status&&(
               <motion.div className={`lc-status lc-status-${status.type}`}
-                initial={{opacity:0,y:-8}} animate={{opacity:1,y:0}} exit={{opacity:0}}>
+                initial={{opacity:0,y:-8}} animate={{opacity:1,y:0}} exit={{opacity:0}} style={{marginTop:'12px'}}>
                 {status.msg}
               </motion.div>
             )}
           </AnimatePresence>
 
           {/* Import progress */}
-          {importing && (
-            <div className="lc-progress-wrap">
+          {importing&&(
+            <div className="lc-progress-wrap" style={{marginTop:'12px'}}>
               <div className="lc-progress-info">
                 <span>Importing to Firebase...</span>
                 <span style={{fontFamily:"'JetBrains Mono',monospace"}}>{progress.current}/{progress.total}</span>
@@ -250,40 +345,28 @@ export default function LeetCodeSync() {
           )}
 
           {/* User card */}
-          {lcData && (
-            <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}}>
+          {lcData&&(
+            <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} style={{marginTop:'12px'}}>
               <div className="lc-user-card">
-                <div className="lc-user-avatar">{lcData.username[0].toUpperCase()}</div>
+                <div className="lc-user-avatar">{(lcData.username||'?')[0].toUpperCase()}</div>
                 <div>
-                  <div className="lc-user-name">{lcData.name || lcData.username}</div>
-                  <div className="lc-user-sub">@{lcData.username} · {lcData.total} solved on LeetCode</div>
+                  <div className="lc-user-name">{lcData.name||lcData.username}</div>
+                  <div className="lc-user-sub">@{lcData.username} Â· {lcData.total} solved on LeetCode</div>
                 </div>
               </div>
-
-              {/* Stats */}
               <div className="lc-stats-row">
-                <div className="lc-stat">
-                  <div className="lc-stat-val" style={{color:'var(--accent2)'}}>{lcData.total}</div>
-                  <div className="lc-stat-label">Total Solved</div>
-                </div>
-                <div className="lc-stat">
-                  <div className="lc-stat-val" style={{color:'#4ade80'}}>{lcData.easy}</div>
-                  <div className="lc-stat-label">Easy</div>
-                </div>
-                <div className="lc-stat">
-                  <div className="lc-stat-val" style={{color:'#fbbf24'}}>{lcData.medium}</div>
-                  <div className="lc-stat-label">Medium</div>
-                </div>
-                <div className="lc-stat">
-                  <div className="lc-stat-val" style={{color:'#fb7185'}}>{lcData.hard}</div>
-                  <div className="lc-stat-label">Hard</div>
-                </div>
+                {[['Total',lcData.total,'var(--accent2)'],['Easy',lcData.easy,'#4ade80'],['Medium',lcData.medium,'#fbbf24'],['Hard',lcData.hard,'#fb7185']].map(([l,v,c])=>(
+                  <div key={l} className="lc-stat">
+                    <div className="lc-stat-val" style={{color:c}}>{v}</div>
+                    <div className="lc-stat-label">{l}</div>
+                  </div>
+                ))}
               </div>
             </motion.div>
           )}
 
           {/* Problems list */}
-          {problems.length > 0 && (
+          {problems.length>0&&(
             <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.1}}>
               <div className="lc-filter-row">
                 {['All','Easy','Medium','Hard'].map(f=>(
@@ -294,56 +377,38 @@ export default function LeetCodeSync() {
                 </span>
                 <span style={{fontSize:'11px',color:'var(--muted)'}}>{newCount} new</span>
               </div>
-
               <div className="lc-problems">
-                {filteredProblems.map(p => {
-                  const isExisting = existingNames.has(p.name)
-                  const isSel = selected.has(String(p.id))
+                {filteredProblems.map(p=>{
+                  const isEx=existingNames.has(p.name), isSel=selected.has(String(p.id))
                   return (
                     <div key={p.id} className={`lc-problem-row${isSel?' selected':''}`}
-                      style={isExisting?{opacity:0.4,cursor:'default'}:{}}
-                      onClick={()=>!isExisting&&toggleSelect(p.id)}>
+                      style={isEx?{opacity:0.4,cursor:'default'}:{}}
+                      onClick={()=>!isEx&&toggleSelect(p.id)}>
                       <div className={`lc-check${isSel?' checked':''}`}>
-                        {isSel&&<span style={{color:'white',fontSize:'10px',fontWeight:700}}>✓</span>}
+                        {isSel&&<span style={{color:'white',fontSize:'10px',fontWeight:700}}>âœ“</span>}
                       </div>
                       <span className="lc-problem-name">{p.name}</span>
                       <span className={`lc-diff lc-diff-${p.difficulty.toLowerCase()}`}>{p.difficulty}</span>
-                      {isExisting&&<span className="lc-already">✓ imported</span>}
+                      {isEx&&<span className="lc-already">âœ“ imported</span>}
                     </div>
                   )
                 })}
               </div>
-
               <button className="lc-import-btn" onClick={importSelected} disabled={importing||newCount===0}>
-                {importing
-                  ? <><span className="lc-spinner"/>Importing {progress.current}/{progress.total}...</>
-                  : `↓ Import ${newCount} Problem${newCount!==1?'s':''} to Tracker`
-                }
+                {importing?<><span className="lc-spinner"/>Importing {progress.current}/{progress.total}...</>
+                  :`â†“ Import ${newCount} Problem${newCount!==1?'s':''} to Tracker`}
               </button>
             </motion.div>
           )}
 
-          {/* Empty state */}
-          {!fetching && !lcData && (
+          {!fetching&&!problems.length&&!status&&(
             <div className="lc-empty">
-              <div className="lc-empty-icon">🔗</div>
+              <div className="lc-empty-icon">ðŸ”—</div>
               <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:'14px',fontWeight:600,color:'var(--text)',marginBottom:'6px'}}>
-                Connect your LeetCode
-              </div>
-              <div style={{fontSize:'12px',color:'var(--muted)',lineHeight:1.6}}>
-                Enter your LeetCode username and click Sync.<br/>
-                Your LeetCode profile must be <strong style={{color:'var(--text)'}}>public</strong>.
+                {tab==='quick'?'Enter your LeetCode username':'Paste your cookies to sync all problems'}
               </div>
             </div>
           )}
-        </motion.div>
-
-        {/* Info */}
-        <motion.div style={{background:'rgba(15,15,26,0.7)',border:'1px solid rgba(30,30,48,0.8)',borderRadius:'12px',padding:'14px 18px'}}
-          initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.2}}>
-          <div style={{fontSize:'11px',color:'var(--muted)',lineHeight:1.8}}>
-            <span style={{color:'var(--accent3)',fontWeight:600}}>⚡ Powered by proxy server</span> — fetches all your solved problems, not just last 50. Already imported problems are automatically detected and skipped.
-          </div>
         </motion.div>
       </div>
     </>
