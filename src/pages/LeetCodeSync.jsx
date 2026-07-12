@@ -142,7 +142,7 @@ export default function LeetCodeSync() {
       setExistingNames(existing)
       setSelected(new Set(probs.filter(p=>!existing.has(p.name)).map(p=>String(p.id))))
       setProblems(probs)
-      setStatus({ type:'info', msg:`âœ“ Found ${probs.length} recent problems for @${data.username} (last 20 only)` })
+      setStatus({ type:'info', msg:`“ Found ${probs.length} recent problems for @${data.username} (last 20 only)` })
     } catch(e) {
       setStatus({ type:'error', msg: e.message||'Failed to fetch' })
     } finally { setFetching(false) }
@@ -209,7 +209,7 @@ export default function LeetCodeSync() {
         })
         setProgress({current:i+1,total:toImport.length})
       }
-      setStatus({type:'success',msg:`âœ“ Imported ${toImport.length} problems!`})
+      setStatus({type:'success',msg:`“ Imported ${toImport.length} problems!`})
       setExistingNames(e=>new Set([...e,...toImport.map(p=>p.name)]))
       setSelected(new Set())
     } catch(e) {
@@ -268,19 +268,19 @@ export default function LeetCodeSync() {
               <div className="lc-steps">
                 <div className="lc-step">
                   <div className="lc-step-num">1</div>
-                  <div className="lc-step-text">LeetCode.com pe login karo â†’ F12 â†’ Application tab â†’ Cookies â†’ leetcode.com</div>
+                  <div className="lc-step-text">Log in to LeetCode.com -{'>'} Press F12 -{'>'} Go to the Application tab -{'>'} Click on Cookies - {'>'} Select leetcode.com.</div>
                 </div>
                 <div className="lc-step">
                   <div className="lc-step-num">2</div>
-                  <div className="lc-step-text"><code>LEETCODE_SESSION</code> cookie ki value copy karo (bahut lamba string hoga)</div>
+                  <div className="lc-step-text">Copy the value of the<code>LEETCODE_SESSION</code> cookie (it will be a very long string).</div>
                 </div>
                 <div className="lc-step">
                   <div className="lc-step-num">3</div>
-                  <div className="lc-step-text"><code>csrftoken</code> cookie ki value copy karo</div>
+                  <div className="lc-step-text">Copy the value of the<code>csrftoken</code> cookie.</div>
                 </div>
                 <div className="lc-step">
                   <div className="lc-step-num">4</div>
-                  <div className="lc-step-text">Dono neeche paste karo â†’ Fetch All karo</div>
+                  <div className="lc-step-text">Paste both values in the section below -{'>'}Click Fetch All.</div>
                 </div>
               </div>
 
@@ -303,7 +303,7 @@ export default function LeetCodeSync() {
               {cookieSaved && (
                 <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'10px 14px',background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.2)',borderRadius:'8px',marginBottom:'10px'}}>
                   <div style={{fontSize:'12px',color:'#4ade80',display:'flex',alignItems:'center',gap:'6px'}}>
-                    <span>âœ“</span> Cookies saved â€” auto-filled next time!
+                    <span>“</span> Cookies saved ” auto-filled next time!
                   </div>
                   <button onClick={()=>{
                     localStorage.removeItem('lc_session')
@@ -389,7 +389,7 @@ export default function LeetCodeSync() {
                       </div>
                       <span className="lc-problem-name">{p.name}</span>
                       <span className={`lc-diff lc-diff-${p.difficulty.toLowerCase()}`}>{p.difficulty}</span>
-                      {isEx&&<span className="lc-already">âœ“ imported</span>}
+                      {isEx&&<span className="lc-already">“ imported</span>}
                     </div>
                   )
                 })}
@@ -403,7 +403,7 @@ export default function LeetCodeSync() {
 
           {!fetching&&!problems.length&&!status&&(
             <div className="lc-empty">
-              <div className="lc-empty-icon">ðŸ”—</div>
+              <div className="lc-empty-icon">—</div>
               <div style={{fontFamily:"'Space Grotesk',sans-serif",fontSize:'14px',fontWeight:600,color:'var(--text)',marginBottom:'6px'}}>
                 {tab==='quick'?'Enter your LeetCode username':'Paste your cookies to sync all problems'}
               </div>
